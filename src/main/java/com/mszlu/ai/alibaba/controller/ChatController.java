@@ -1,0 +1,57 @@
+package com.mszlu.ai.alibaba.controller;
+
+import com.mszlu.ai.alibaba.service.ChatService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.Map;
+
+/**
+ * AI 对话接口
+ *
+ * 通过 HTTP 请求和 AI 对话
+ */
+@RestController
+@RequestMapping("/api/chat")
+public class ChatController {
+
+    private final ChatService chatService;
+
+    public ChatController(ChatService chatService) {
+        this.chatService = chatService;
+    }
+
+    /**
+     * 简单对话接口
+     *
+     * 使用方法：
+     * POST http://localhost:8080/api/chat/simple
+     * Body: {"message": "你好，请介绍一下自己"}
+     */
+    @PostMapping("/simple")
+    public Map<String, String> simpleChat(@RequestBody Map<String, String> request) {
+        String userMessage = request.get("message");
+        String aiResponse = chatService.simpleChat(userMessage);
+
+        return Map.of(
+                "user", userMessage,
+                "ai", aiResponse
+        );
+    }
+
+    /**
+     * GET 方式对话（方便浏览器测试）
+     *
+     * 使用方法：
+     * http://localhost:8080/api/chat/ask?message=你好
+     */
+    @GetMapping("/ask")
+    public Map<String, String> ask(@RequestParam String message) {
+        String aiResponse = chatService.advancedChat(message);
+
+        return Map.of(
+                "user", message,
+                "ai", aiResponse
+        );
+    }
+}
