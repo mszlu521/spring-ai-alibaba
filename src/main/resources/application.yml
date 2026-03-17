@@ -8,7 +8,18 @@ spring:
       chat:
         options:
           model: qwen3-max
+    ollama:
+      base-url: http://localhost:11434
+      chat:
+        model: qwen3.5:35b
 # 日志级别
 logging:
   level:
     com.alibaba.cloud.ai: DEBUG
+    org:
+      springframework:
+          ai:
+            chat:
+              client:
+                advisor:
+                  SimpleLoggerAdvisor: DEBUG

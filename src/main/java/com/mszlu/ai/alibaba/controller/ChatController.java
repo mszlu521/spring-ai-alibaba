@@ -1,6 +1,7 @@
 package com.mszlu.ai.alibaba.controller;
 
 import com.mszlu.ai.alibaba.service.ChatService;
+import com.mszlu.ai.alibaba.service.StructuredOutputService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -16,9 +17,11 @@ import java.util.Map;
 public class ChatController {
 
     private final ChatService chatService;
+    private final StructuredOutputService structuredOutputService;
 
-    public ChatController(ChatService chatService) {
+    public ChatController(ChatService chatService, StructuredOutputService structuredOutputService) {
         this.chatService = chatService;
+        this.structuredOutputService = structuredOutputService;
     }
 
     /**
@@ -53,5 +56,18 @@ public class ChatController {
                 "user", message,
                 "ai", aiResponse
         );
+    }
+
+    @GetMapping("/chatWithRole")
+    public Map<String, String> chatWithRole(@RequestParam  String role, @RequestParam String message) {
+        String aiResponse = chatService.chatWithRole(role, message);
+        return Map.of(
+                "user", message,
+                "message", aiResponse
+        );
+    }
+    @GetMapping("/json")
+    public StructuredOutputService.Person chatWithJson() {
+        return structuredOutputService.extractUserInfo();
     }
 }
