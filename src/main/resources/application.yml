@@ -16,6 +16,7 @@ spring:
 logging:
   level:
     com.alibaba.cloud.ai: DEBUG
+    org.springframework.ai: DEBUG
     org:
       springframework:
           ai:
